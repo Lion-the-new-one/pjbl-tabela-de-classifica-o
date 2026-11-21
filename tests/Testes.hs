@@ -73,7 +73,7 @@ partidasDesempateVitorias =
 partidasDesempateSaldo :: [Partida]
 partidasDesempateSaldo =
   [ Partida 1 "Alfa" 3 0 "Gama"
-  , Partida 1 "Beta" 1 0 "Gama"
+  , Partida 1 "Beta" 1 0 "Delta"
   ]
 
 partidasDesempateGolsPro :: [Partida]
@@ -131,6 +131,9 @@ testesCamada2 = do
   testar "aproveitamento de time com 100% (3 vitorias em 3 jogos)"
     (aproveitamento (Linha "Cascavel" 3 3 0 0 4 0))
     100.0
+  testar "classificacao sobre lista vazia devolve lista vazia"
+    (classificacao [])
+    []
   testar "classificacao final completa do campeonato de teste"
     (classificacao partidasTeste)
     classificacaoFinalEsperada
@@ -144,7 +147,7 @@ testesCamada2 = do
     (map time (take 3 (classificacao partidasTeste)))
     ["Coritiba", "Athletico", "Cascavel"]
   testar "desempate em pontos (3 pts) decidido por numero de vitorias (TimeA 1V vs TimeB 0V)"
-    (take 2 (map time (classificacao partidasDesempateVitorias)))
+    (drop 2 (map time (classificacao partidasDesempateVitorias)))
     ["TimeA", "TimeB"]
   testar "desempate em pontos e vitorias decidido por saldo de gols (Alfa +3 vs Beta +1)"
     (take 2 (map time (classificacao partidasDesempateSaldo)))
@@ -174,6 +177,15 @@ testesCamada3 = do
   testar "lerCampeonato sobre entrada valida devolve Right"
     (lerCampeonato dadosCampeonato)
     (Right partidasTeste)
+  testar "lerCampeonato sobre texto vazio devolve Right []"
+    (lerCampeonato "")
+    (Right [])
+  testar "lerCampeonato apenas com comentarios e linhas em branco devolve Right []"
+    (lerCampeonato "# comentario\n\n   \n# outro comentario\n")
+    (Right [])
+  testar "todosOsErros sobre texto vazio devolve lista vazia"
+    (todosOsErros "")
+    []
   testar "construtor Erro: CamposInvalidos (faltando campos)"
     (lerPartida 1 "1;Coritiba;2;0")
     (Left (CamposInvalidos 1))
