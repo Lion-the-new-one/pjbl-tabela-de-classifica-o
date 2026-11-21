@@ -1,5 +1,6 @@
 module Main (main) where
 
+import Data.Maybe (fromMaybe)
 import Tipos
   ( Linha (..)
   , Partida (..)
@@ -62,8 +63,8 @@ relatorioCamada1 ps = unlines
 relatorioEstatisticas :: [Partida] -> String
 relatorioEstatisticas ps = unlines
   [ "=== 4. ESTATISTICAS DA CAMADA 2 ==="
-  , "Maior goleada: " ++ maybe "Nenhuma partida" formatarPartida (maiorGoleada ps)
-  , "Media de gols por partida: " ++ maybe "N/A" show (mediaGols ps)
+  , "Maior goleada: " ++ fromMaybe "Nenhuma partida" (formatarPartida <$> maiorGoleada ps)
+  , "Media de gols por partida: " ++ fromMaybe "N/A" (show <$> mediaGols ps)
   , "Aproveitamento por time (classificacao final):"
   , unlines (map (("  - " ++) . formatarAproveitamento) (classificacao ps))
   ]
