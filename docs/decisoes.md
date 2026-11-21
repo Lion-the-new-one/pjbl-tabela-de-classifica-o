@@ -38,7 +38,7 @@ Nenhuma função parcial da biblioteca padrão (`head`, `maximum`, `foldr1`) foi
 ## 3. Validação Monádica e Isolamento de IO (Camada 3)
 
 ### 3.1. Uso Conjunto das Mônadas `Maybe` e `Either`
-* **`Maybe` na conversão de tipos:** A leitura de inteiros (`lerInt`) evita a função parcial `read` e utiliza `readMaybe` encadeado com o operador monádico `(>>=)` sobre `Just (limpar txt)` e consumido pelo eliminador `maybe`, convertendo `Nothing` em `Left (NumeroInvalido numLinha)`.
+* **`Maybe` na conversão de tipos e formatação:** A leitura de inteiros (`lerInt`) evita a função parcial `read` e utiliza `readMaybe` combinado com o eliminador `maybe`, convertendo `Nothing` em `Left (NumeroInvalido numLinha)`. Na exibição das estatísticas em `Main.hs`, `Maybe` é utilizado como *Functor* (`<$>`) junto a `fromMaybe` para formatar com segurança os retornos opcionais de `maiorGoleada` e `mediaGols`.
 * **`Either` com notação `do` e `traverse`:** Em `lerPartida`, todas as regras de validação de uma linha são encadeadas em um bloco `do` na mônada `Either Erro`. A primeira validação que falha retorna `Left`, interrompendo imediatamente o cálculo sem necessidade de expressões `case` aninhadas. Em `lerCampeonato`, a função `traverse` aplica `lerPartida` a todas as linhas úteis e, em seguida, valida a unicidade dos times por rodada, propagando automaticamente o primeiro erro encontrado.
 * **Relatório exaustivo em `todosOsErros`:** Como a instância monádica de `Either` possui semântica de curto-circuito (para no primeiro `Left`), a função `todosOsErros` utiliza `map` combinado com `partitionEithers` (`Data.Either`). Isso permite coletar simultaneamente todos os erros individuais de linha e todos os erros de repetição em rodadas a partir das partidas válidas.
 
