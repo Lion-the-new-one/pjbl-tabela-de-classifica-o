@@ -26,3 +26,50 @@ projeto/
 ├── docs/
 │   └── decisoes.md        # Justificativas das decisões de modelagem e limitações conhecidas
 └── README.md              # Instruções de compilação e execução
+```
+
+---
+
+## 3. Como Compilar e Executar (GHC Local)
+
+Execute os comandos abaixo a partir da pasta raiz do projeto (`projeto/`).
+
+### 3.1. Executar a Demonstração Completa (`Main.hs`)
+
+- **Opção A — Compilando com verificação estrita (`-Wall`):**
+  ```bash
+  ghc -Wall -isrc src/Main.hs -o Main
+  ./Main
+  ```
+  *(No Windows PowerShell/CMD, execute `.\Main.exe`)*
+
+- **Opção B — Execução direta via `runghc` (sem gerar binário):**
+  ```bash
+  runghc -Wall -isrc src/Main.hs
+  ```
+
+### 3.2. Executar a Bateria de Testes (`Testes.hs`)
+
+- **Opção A — Compilando o executável de testes:**
+  ```bash
+  ghc -Wall -isrc tests/Testes.hs -o Testes
+  ./Testes
+  ```
+  *(No Windows PowerShell/CMD, execute `.\Testes.exe`)*
+
+- **Opção B — Execução direta via `runghc`:**
+  ```bash
+  runghc -Wall -isrc tests/Testes.hs
+  ```
+
+---
+
+## 4. Critérios de Desempate Adotados
+
+Na função `classificacao` (Camada 2), as equipes são ordenadas de forma decrescente pelos seguintes critérios sucessivos:
+
+1. Maior pontuação (`pontosLinha`: 3 por vitória, 1 por empate, 0 por derrota);
+2. Maior número de vitórias (`vitorias`);
+3. Maior saldo de gols (`saldo` = gols pró − gols contra);
+4. Maior número de gols marcados (`golsPro`);
+5. Ordem alfabética do nome do time (`time`).
