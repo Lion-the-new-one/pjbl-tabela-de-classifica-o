@@ -32,7 +32,7 @@ limpar = dropWhileEnd isSpace . dropWhile isSpace
 
 lerInt :: Int -> String -> Either Erro Int
 lerInt numLinha txt =
-  maybe (Left (NumeroInvalido numLinha)) Right (Just (limpar txt) >>= readMaybe)
+  maybe (Left (NumeroInvalido numLinha)) Right (readMaybe (limpar txt))
 
 extrairCampos :: Int -> [String] -> Either Erro (String, String, String, String, String)
 extrairCampos numLinha [r, m, gm, gv, v]
